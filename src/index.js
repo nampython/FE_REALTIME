@@ -8,6 +8,16 @@ const path = require('path')
 
 const {Server} = require('socket.io')
 const io = new Server(server)
+
+const route = require('./resources/routes')
+
+// database
+const db = require('./config/db/mongdb');
+
+
+// connect to db
+db.connect();
+
 // const Consumer = kafka.Consumer,
 //     client = new kafka.KafkaClient('localhost:9092'),
 //     consumer = new Consumer(client, [ { topic: 'tweets', partition: 0 } ], { autoCommit: false });
@@ -23,11 +33,9 @@ app.engine('hbs', engine({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views'));
 
-console.log(path.join(__dirname, 'resources/views'))
 
-app.get('/', (req, res) => {
-    res.render('home');
-});
+route(app);
+
 
 // io.on('connection', (client) => {
 //     // console.log('user connected')
