@@ -1,7 +1,9 @@
-const Sentiment = require('../models/Sentiment')
+const Tweet = require('../models/Sentiment')
 
 
-class NewsController {
+
+
+class SiteController {
 
 
     /**
@@ -11,13 +13,16 @@ class NewsController {
      */
     home(req, res) {
         // res.render('news');
-        Sentiment.find({}, function(err, sentiments) {
-            if (!err) {
-                res.json(sentiments);
-            } else {
-                res.status(400).json({error: err.message});
-            }
-        })
+        // Tweet.find({}, function(err, sentiments) {
+        //     if (!err) {
+        //         res.json(sentiments);
+        //     } else {
+        //         res.status(400).json({error: err.message});
+        //     }
+        // })
+        Tweet.find({})
+            .then(tweets => res.render('home'))
+            .catch(err => next(err));
     }
 
 
@@ -31,4 +36,4 @@ class NewsController {
     }
 }
 
-module.exports = new NewsController;
+module.exports = new SiteController;

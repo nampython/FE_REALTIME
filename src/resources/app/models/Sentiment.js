@@ -11,4 +11,5 @@ const sentimentSchema = new Schema({
     score: String
 });
 
-module.exports = mongoose.model('test_tweet', sentimentSchema);
+
+module.exports = mongoose.model('Tweet', sentimentSchema);
