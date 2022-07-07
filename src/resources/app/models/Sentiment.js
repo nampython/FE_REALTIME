@@ -4,11 +4,15 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const sentimentSchema = new Schema({
-    id: String,
+    id: Number,
     timeStamp: String,
     tweet64: String,
-    location: String,
-    score: String
+    screen_name: String,
+    url_img: String,
+    latitude: Number,
+    longitude: Number,
+    score: Number,
+    lang: String
 });
 
 

@@ -72,10 +72,12 @@
             {
                 scope: 'world',
                 title: 'Sentiment',
-                element: document.getElementById('container'),
+                projection: 'equirectangular',
+                element: document.getElementById('worldmap'),
+                //Disabling popup or hover effects
                 geographyConfig: {
-                    popupOnHover: true,
-                    highlightOnHover: true
+                    popupOnHover: false,
+                    highlightOnHover: false
                 },
                 bubblesConfig: {
                     radius: 7,
@@ -93,12 +95,13 @@
                         datamap.svg.selectAll("g").attr("transform", "translate(0,0)scale(1.0)");
                     }
                 },
+                //Changing the default fill colors
                 fills: {
+                    '0': 'blue',
+                    '-1': 'red',
+                    '1': 'green',
                     defaultFill: '#E5DBD2',
-                    "0": 'blue',
-                    "-1": 'red',
-                    "1": 'green'
-                }
+                },
             }
         );
         worldmap.legend({
@@ -112,6 +115,56 @@
         d3.select(window).on('resize', function () {
             worldmap.resize();
         });
+
+        function determineColor(sentiment) {
+            var newColor = sentiment == 0 ? "blue" : (sentiment == -1 ? "red" : "green");
+            return newColor;
+        }
+        function determineEmoji(sentiment) {
+            var newColor = sentiment == 0 ? "&#x1F44C;" : (sentiment == -1 ? "&#x1F44E;" : "&#128077;");
+            return newColor;
+        }
+        var func = function (geo, data) {
+            //var url = "https://twitter.com/" + data.name + "/status/" + data.id;
+            var tip = "<div><h3><span style='vertical-align:middle'>@" + data.name + '</span><img style="vertical-align:middle" height="70" width="70" src="' + data.pic + '"></h3></div>';
+            tip += "<h6>" + data.date + "</h6>";
+            tip += "<h4>" + data.text + "</h4>";
+            tip += "Spark MLlib:<font size='6em' color=" + "blue" + ">" + "&#x1F44C;" + "</font>";
+            return "<div class='hoverinfo tooltip'>" + tip + '</div>';
+        }
+
+        var bubble = [{
+            id: 1544899745000423400,
+            name: "m_sakotsu",
+            text: "hh\ne0c.h7!c\tccc @ hdi\ti ihih7! in ihe8, f2g8g\f",
+            fillKey: '0',
+            radius: 10,
+            pic: "https://pbs.twimg.com/profile_images/1247205226471284745/4rdcRWQR_normal.png",
+            date: "1657167776714",
+            latitude: 50.07,
+            longitude: 78.43
+        }];
+
+        worldmap.bubbles(bubble, {
+            popupTemplate: function (geo, data) {
+                var tip = "<div><h3><span style='vertical-align:middle'>@" + data.name + '</span><img style="vertical-align:middle" height="70" width="70" src="' + data.pic + '"></h3></div>';
+                tip += "<h6>" + data.date + "</h6>";
+                tip += "<h4>" + data.text + "</h4>";
+                tip += "Spark MLlib:<font size='6em' color=" + "red" + ">"  + "</font>";
+                return "<div >" + tip + '</div>';
+            }
+        });
+
+
+/**function (geo, data) {
+                {{!-- var url = "https://twitter.com/" + data.name + "/status/" + data.id; --}}
+                var tip = "<div><h3><span style='vertical-align:middle'>@" + data.name + '</span><img style="vertical-align:middle" height="70" width="70" src="' + data.pic + '"></h3></div>';
+                tip += "<h6>" + data.date + "</h6>";
+                tip += "<h4>" + data.text + "</h4>";
+                tip += "Spark MLlib:<font size='6em' color=" + "red" + ">"  + "</font>";
+                return "<div class='hoverinfo tooltip'>" + tip + '</div>';
+            }
+**/
     </script>
 </body>
 

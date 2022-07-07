@@ -4,16 +4,14 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
+    color: black;
 }
 
-#app {
-    width: 85vw;
-    margin: 0 auto;
-}
+
 
 #chatContainer {
     height: 75vh;
-    border: 1px solid #e095fd;
+    border: 1px solid #100016;
     border-radius: 10px;
     margin: 1rem 1rem;
     padding: 0.5rem;
@@ -60,8 +58,8 @@ body {
 
 /* default message styling for server notifications */
 .message {
-    background-color: rgb(223, 174, 230);
-    color: #333;
+    background-color: rgb(17, 4, 26);
+    color: rgb(97, 27, 177);
     font-size: 1.2rem;
     text-align: center;
     border-radius: 5px;

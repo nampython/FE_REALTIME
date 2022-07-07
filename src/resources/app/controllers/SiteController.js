@@ -12,7 +12,6 @@ class SiteController {
      * @param {*} res 
      */
     home(req, res) {
-        // res.render('news');
         // Tweet.find({}, function(err, sentiments) {
         //     if (!err) {
         //         res.json(sentiments);
@@ -21,7 +20,9 @@ class SiteController {
         //     }
         // })
         Tweet.find({})
-            .then(tweets => res.render('home'))
+            .then(tweets => res.render('home', {
+                tweets: tweets
+            }))
             .catch(err => next(err));
     }
 
