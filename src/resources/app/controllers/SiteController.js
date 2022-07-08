@@ -21,9 +21,12 @@ class SiteController {
         // })
         Tweet.find({})
             .then(tweets => res.render('home', {
-                tweets: tweets
+                tweets: tweets,
             }))
             .catch(err => next(err));
+        Tweet.watch().on('change', (change) => {
+            console.log(change.fullDocument);
+        })
     }
 
 
