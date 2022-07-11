@@ -1,6 +1,6 @@
 // Using Node.js `require()`
 const mongoose = require('mongoose');
-const tweet = require('/home/nam-pc/Desktop/source code/FE_REALTIME/src/resources/app/models/Sentiment.js')
+const tweet = require('C:/Users/nam.dinh/Desktop/study/big/src/resources/app/models/Sentiment.js')
 
 const express = require('express');
 const uri = "mongodb+srv://nam130599:nam130599@cluster0.ebeqc.mongodb.net/M001?retryWrites=true&w=majority";

@@ -169,14 +169,13 @@
     </script>
 
     <script>
-        window.onload = function () {
-
-            var chart = new CanvasJS.Chart("pieChat", {
+        socket.on('groupSentiment', function (data) {
+            var chart1 = new CanvasJS.Chart("pieChat", {
                 theme: "light2", // "light1", "light2", "dark1", "dark2"
                 exportEnabled: true,
                 animationEnabled: true,
                 title: {
-                    text: "Desktop Browser Market Share in 2016"
+                    text: "Sentiments"
                 },
                 data: [{
                     type: "pie",
@@ -187,20 +186,46 @@
                     indexLabelFontSize: 16,
                     indexLabel: "{label} - {y}%",
                     dataPoints: [
-                        { y: 51.08, label: "Chrome" },
-                        { y: 27.34, label: "Internet Explorer" },
-                        { y: 10.62, label: "Firefox" },
-                        { y: 5.02, label: "Microsoft Edge" },
-                        { y: 4.07, label: "Safari" },
-                        { y: 1.22, label: "Opera" },
-                        { y: 0.44, label: "Others" }
+                        { y: (data[2].count / (data[2].count + data[1].count + data[0].count)) * 100, label: data[2]._id },
+                        { y: (data[1].count / (data[1].count + data[2].count + data[0].count)) * 100, label: data[1]._id },
+                        { y: (data[0].count / (data[0].count + data[1].count + data[2].count)) * 100, label: data[0]._id },
                     ]
                 }]
             });
-            chart.render();
-        }
-
-
+            chart1.render();
+        })
+/*0: {_id: 'Neutral', count: 189}
+                        1: {_id: 'Negative', count: 43}
+                        2: {_id: 'Positive', count: 44}*/
+    </script>
+    <script>
+        var chart2 = new CanvasJS.Chart("realtimeChart", {
+            animationEnabled: true,
+            title: {
+                text: "QOS - Survey Result"
+            },
+            axisY: {
+                title: "Response values",
+                includeZero: true,
+                interval: 10
+            },
+            toolTip: {
+                shared: true
+            },
+            data: [{
+                type: "bar",
+                name: "Avg. Score",
+                toolTipContent: "<b>{label}</b> <br> <span style=\"color:#4F81BC\">{name}</span>: {y}",
+                dataPoints: [
+                    { y: 94, label: "Order Accuracy" },
+                    { y: 74, label: "Packaging" },
+                    { y: 80, label: "Quantity" },
+                    { y: 88, label: "Quality" },
+                    { y: 76, label: "Delivery" }
+                ]
+            }]
+        });
+        chart2.render();
     </script>
 </body>
 

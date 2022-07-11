@@ -63,7 +63,7 @@ route(app);
 
 
 
-const tweet = require('/home/nam-pc/Desktop/source code/FE_REALTIME/src/resources/app/models/Sentiment.js')
+const tweet = require('C:/Users/nam.dinh/Desktop/study/big/src/resources/app/models/Sentiment.js')
 
 // tweet.watch().on('change',(change)=>{
 //     io.on('connection', (client) => {
@@ -86,19 +86,35 @@ io.on('connection', (client) => {
 })
 
 
+const pipeline = [{
+    $group: {
+        _id: '$sentimentType',
+        count: {
+            $sum: 1
+        }
+    }
+}]
+
+// tweet.watch(pipeline).on('change', (change) => {
+//     console.log(change);
+// })
+
+
+io.on('connection', (client) => {
+    async function run() {
+        let docs =  await tweet.aggregate(pipeline)
+        client.emit('groupSentiment', docs);
+    }
+    run();
+})
+
+
+
+
 
 // async function run() {
-//     let docs =  await tweet.aggregate([
-//         {
-//             $group: {
-//                 _id: '$sentimentType',
-//                 count: {
-//                     $sum: 1
-//                 }
-//             }
-//         }
-//     ])
-//     docs.length;
+//     let docs =  await tweet.aggregate(pipeline)
+//     console.log(docs);
 // }
 
 
