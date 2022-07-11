@@ -24,9 +24,9 @@ class SiteController {
                 tweets: tweets,
             }))
             .catch(err => next(err));
-        Tweet.watch().on('change', (change) => {
-            console.log(change.fullDocument);
-        })
+        // Tweet.watch().on('change', (change) => {
+        //     console.log(change.fullDocument);
+        // })
     }
 
 

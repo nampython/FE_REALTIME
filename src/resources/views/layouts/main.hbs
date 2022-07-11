@@ -37,10 +37,12 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
     <script src="//datamaps.github.io/scripts/datamaps.world.min.js?v=1"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const socket = io();
-        const chatForm = document.querySelector('#chat-form')
-        const chatMess = document.querySelector('#chat-mes')
+        //const chatForm = document.querySelector('#chat-form')
+        //const chatMess = document.querySelector('#chat-mes')
         // chatForm.addEventListener('submit', (e) => {
         //     e.preventDefault() 
         //     const message = chatMess.value
@@ -49,14 +51,21 @@
         //     );
         //     chatMess.value = ''
         // })
-        const messages = document.querySelector('#messages')
+        //const messages = document.querySelector('#messages')
         socket.on('event', (message) => {
             // const chatItem = document.createElement('li')
             // chatItem.textContent = message;
             // messages.appendChild(chatItem);
             // window.scrollTo(0, document.body.scrollHeight);
-            addMessage(message);
+            addMessage(JSON.stringify(message));
         })
+        /*socket.on('tweets', (message) => {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('tweets');
+            messageElement.innerText = `${JSON.stringify(message)}`;
+            const chatContainer = document.getElementById('displayTweets');
+            chatContainer.append(messageElement)
+        })*/
         function addMessage(data) {
             const messageElement = document.createElement('div')
             messageElement.classList.add('message')
@@ -132,39 +141,66 @@
             tip += "Spark MLlib:<font size='6em' color=" + "blue" + ">" + "&#x1F44C;" + "</font>";
             return "<div class='hoverinfo tooltip'>" + tip + '</div>';
         }
+        socket.on('tweets', function (tweets) {
+            var dataBubble = {
+                id: tweets.id,
+                name: tweets.screen_name,
+                text: tweets.tweet64,
+                fillKey: tweets.score,
+                radius: 5,
+                pic: tweets.url_img,
+                date: tweets.timeStamp,
+                latitude: tweets.latitude,
+                longitude: tweets.longitude
+            };
 
-        var bubble = [{
-            id: 1544899745000423400,
-            name: "m_sakotsu",
-            text: "hh\ne0c.h7!c\tccc @ hdi\ti ihih7! in ihe8, f2g8g\f",
-            fillKey: '0',
-            radius: 10,
-            pic: "https://pbs.twimg.com/profile_images/1247205226471284745/4rdcRWQR_normal.png",
-            date: "1657167776714",
-            latitude: 50.07,
-            longitude: 78.43
-        }];
+            const bubble_array = [];
+            bubble_array.push(dataBubble);
+            worldmap.bubbles(bubble_array, {
+                popupTemplate: function (geo, data) {
+                    var tip = "<div><h3><span style='vertical-align:middle'>@" + data.name + '</span><img style="vertical-align:middle" height="70" width="70" src="' + data.pic + '"></h3></div>';
+                    tip += "<h6>" + data.date + "</h6>";
+                    tip += "<h4>" + data.text + "</h4>";
+                    tip += "Spark MLlib:<font size='6em' color=" + "red" + ">" + "</font>";
+                    return "<div  >" + tip + '</div>';
+                }
+            });
+        })
+    </script>
 
-        worldmap.bubbles(bubble, {
-            popupTemplate: function (geo, data) {
-                var tip = "<div><h3><span style='vertical-align:middle'>@" + data.name + '</span><img style="vertical-align:middle" height="70" width="70" src="' + data.pic + '"></h3></div>';
-                tip += "<h6>" + data.date + "</h6>";
-                tip += "<h4>" + data.text + "</h4>";
-                tip += "Spark MLlib:<font size='6em' color=" + "red" + ">"  + "</font>";
-                return "<div  >" + tip + '</div>';
-            }
-        });
+    <script>
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("pieChat", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                exportEnabled: true,
+                animationEnabled: true,
+                title: {
+                    text: "Desktop Browser Market Share in 2016"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 25,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [
+                        { y: 51.08, label: "Chrome" },
+                        { y: 27.34, label: "Internet Explorer" },
+                        { y: 10.62, label: "Firefox" },
+                        { y: 5.02, label: "Microsoft Edge" },
+                        { y: 4.07, label: "Safari" },
+                        { y: 1.22, label: "Opera" },
+                        { y: 0.44, label: "Others" }
+                    ]
+                }]
+            });
+            chart.render();
+        }
 
 
-/**function (geo, data) {
-                {{!-- var url = "https://twitter.com/" + data.name + "/status/" + data.id; --}}
-                var tip = "<div><h3><span style='vertical-align:middle'>@" + data.name + '</span><img style="vertical-align:middle" height="70" width="70" src="' + data.pic + '"></h3></div>';
-                tip += "<h6>" + data.date + "</h6>";
-                tip += "<h4>" + data.text + "</h4>";
-                tip += "Spark MLlib:<font size='6em' color=" + "red" + ">"  + "</font>";
-                return "<div class='hoverinfo tooltip'>" + tip + '</div>';
-            }
-**/
     </script>
 </body>
 
