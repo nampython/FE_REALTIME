@@ -195,8 +195,8 @@
             chart1.render();
         })
 /*0: {_id: 'Neutral', count: 189}
-                        1: {_id: 'Negative', count: 43}
-                        2: {_id: 'Positive', count: 44}*/
+                                        1: {_id: 'Negative', count: 43}
+                                        2: {_id: 'Positive', count: 44}*/
     </script>
     <script>
         var chart2 = new CanvasJS.Chart("realtimeChart", {
@@ -217,15 +217,34 @@
                 name: "Avg. Score",
                 toolTipContent: "<b>{label}</b> <br> <span style=\"color:#4F81BC\">{name}</span>: {y}",
                 dataPoints: [
-                    { y: 94, label: "Order Accuracy" },
-                    { y: 74, label: "Packaging" },
-                    { y: 80, label: "Quantity" },
-                    { y: 88, label: "Quality" },
-                    { y: 76, label: "Delivery" }
+                    { y: 0, label: "Positive" },
+                    { y: 0, label: "Negative" },
+                    { y: 0, label: "Neutral" }
                 ]
             }]
         });
         chart2.render();
+        socket.on('tweets2', function (data) {
+            const labels = ["Positive", "Negative", "Neutral"]
+            var dps = chart2.options.data[0].dataPoints;
+            dps[0] = {
+                label: labels[0],
+                y: data.Positive
+            }
+            dps[1] = {
+                label: labels[1],
+                y: data.Negative
+            }
+            dps[2] = {
+                label: labels[2],
+                y: data.Neutral
+            }
+            chart2.options.data[0].dataPoints = dps
+            chart2.render();
+        })
+        //function updateChart2() {}
+        //updateChart2();
+        //setInterval(function () { updateChart2() }, 500);
     </script>
 </body>
 
