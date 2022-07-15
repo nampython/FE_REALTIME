@@ -58,7 +58,7 @@ const tweet = require('C:/Users/nam.dinh/Desktop/study/big/src/resources/app/mod
 
 io.on('connection', (client) => {
     consumer.on('message', function (message) {
-        client.emit('event', message.value);
+        client.emit('tweets_FromKafka', message.value);
     });
 })
 io.on('connection', (client) => {
@@ -75,9 +75,9 @@ io.on('connection', (client) => {
         if (change.fullDocument.sentimentType == 'Negative') {
             sentimentNegatives += 1;
         }
-        client.emit('tweets', change.fullDocument);
+        client.emit('tweets_Worldmap', change.fullDocument);
         console.log(`${sentimentPositives}:${sentimentNegatives}:${sentimentNeutral}`);
-        client.emit('tweets2', {
+        client.emit('tweets_columnChart', {
             'Positive' : sentimentPositives,
             'Negative': sentimentNegatives,
             'Neutral': sentimentNeutral
@@ -132,7 +132,7 @@ const pipeline = [{
 io.on('connection', (client) => {
     async function run() {
         let docs =  await tweet.aggregate(pipeline)
-        client.emit('groupSentiment', docs);
+        client.emit('tweets_pieChart', docs);
     }
     run();
 })

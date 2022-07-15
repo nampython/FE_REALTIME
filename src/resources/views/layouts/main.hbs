@@ -52,7 +52,7 @@
         //     chatMess.value = ''
         // })
         //const messages = document.querySelector('#messages')
-        socket.on('event', (message) => {
+        socket.on('tweets_FromKafka', (message) => {
             // const chatItem = document.createElement('li')
             // chatItem.textContent = message;
             // messages.appendChild(chatItem);
@@ -141,7 +141,7 @@
             tip += "Spark MLlib:<font size='6em' color=" + "blue" + ">" + "&#x1F44C;" + "</font>";
             return "<div class='hoverinfo tooltip'>" + tip + '</div>';
         }
-        socket.on('tweets', function (tweets) {
+        socket.on('tweets_Worldmap', function (tweets) {
             var dataBubble = {
                 id: tweets.id,
                 name: tweets.screen_name,
@@ -169,7 +169,7 @@
     </script>
 
     <script>
-        socket.on('groupSentiment', function (data) {
+        socket.on('tweets_pieChart', function (data) {
             var chart1 = new CanvasJS.Chart("pieChat", {
                 theme: "light2", // "light1", "light2", "dark1", "dark2"
                 exportEnabled: true,
@@ -224,7 +224,7 @@
             }]
         });
         chart2.render();
-        socket.on('tweets2', function (data) {
+        socket.on('tweets_columnChart', function (data) {
             const labels = ["Positive", "Negative", "Neutral"]
             var dps = chart2.options.data[0].dataPoints;
             dps[0] = {
