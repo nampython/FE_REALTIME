@@ -41,6 +41,16 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const socket = io();
+
+        var button = document.getElementById("button");
+        var input = document.getElementById("text");
+
+   
+
+        $("button").click(function () {
+            socket.emit("text", input.value)
+            alert(input.value);
+        });
         //const chatForm = document.querySelector('#chat-form')
         //const chatMess = document.querySelector('#chat-mes')
         // chatForm.addEventListener('submit', (e) => {
@@ -74,6 +84,7 @@
             const chatContainer = document.getElementById('chatContainer')
             // adds the new div to the message container div
             chatContainer.append(messageElement)
+            window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
     <script>
@@ -195,8 +206,8 @@
             chart1.render();
         })
 /*0: {_id: 'Neutral', count: 189}
-                                        1: {_id: 'Negative', count: 43}
-                                        2: {_id: 'Positive', count: 44}*/
+                                                1: {_id: 'Negative', count: 43}
+                                                2: {_id: 'Positive', count: 44}*/
     </script>
     <script>
         var chart2 = new CanvasJS.Chart("realtimeChart", {
@@ -246,6 +257,11 @@
         //updateChart2();
         //setInterval(function () { updateChart2() }, 500);
     </script>
+
+    <script>
+
+    </script>
+
 </body>
 
 </html>
