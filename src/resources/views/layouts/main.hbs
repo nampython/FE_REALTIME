@@ -44,38 +44,26 @@
 
         var button = document.getElementById("button");
         var input = document.getElementById("text");
-
-   
-
+        
         $("button").click(function () {
             socket.emit("text", input.value)
-            alert(input.value);
+            //alert(input.value);
         });
-        //const chatForm = document.querySelector('#chat-form')
-        //const chatMess = document.querySelector('#chat-mes')
-        // chatForm.addEventListener('submit', (e) => {
-        //     e.preventDefault() 
-        //     const message = chatMess.value
-        //     socket.emit('chatMessage',
-        //         {message: message}
-        //     );
-        //     chatMess.value = ''
-        // })
-        //const messages = document.querySelector('#messages')
+
+        /*
+            display result (-1, 1) (negative, positive)
+        */
+        socket.on('tweet3', (message) => {
+            const result = document.createElement("div");
+            result.classList.add("result");
+            result.innerText = `${message}`;
+            const resultContainer = document.getElementById('chatContainer1')
+            resultContainer.append(result)
+        })
+
         socket.on('tweets_FromKafka', (message) => {
-            // const chatItem = document.createElement('li')
-            // chatItem.textContent = message;
-            // messages.appendChild(chatItem);
-            // window.scrollTo(0, document.body.scrollHeight);
             addMessage(JSON.stringify(message));
         })
-        /*socket.on('tweets', (message) => {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('tweets');
-            messageElement.innerText = `${JSON.stringify(message)}`;
-            const chatContainer = document.getElementById('displayTweets');
-            chatContainer.append(messageElement)
-        })*/
         function addMessage(data) {
             const messageElement = document.createElement('div')
             messageElement.classList.add('message')
@@ -84,7 +72,7 @@
             const chatContainer = document.getElementById('chatContainer')
             // adds the new div to the message container div
             chatContainer.append(messageElement)
-            window.scrollTo(0, document.body.scrollHeight);
+            //window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
     <script>

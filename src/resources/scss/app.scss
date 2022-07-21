@@ -37,7 +37,7 @@ body {
     border-radius: 10px;
     margin: 1rem 1rem;
     padding: 0.5rem;
-    overflow: scroll;
+    // overflow: scroll;
 }
 
 #messageForm {
@@ -149,3 +149,25 @@ textarea {
     font-size: 16px;
     resize: none;
   }
+
+.containerflex {
+    display: flex;                  /*Kích hoạt flexbox*/
+    flex-direction: row;            /*Thiết lập hướng chính*/
+    flex-wrap: nowrap;              /*Thiết lập chế độ wrap, khi các phần tử vượt qua kích thước hướng chính*/
+    justify-content: flex-end;      /*Căn chỉnh nội dung bên trong container có flexbox*/
+    align-items: stretch;           /*Căn chỉnh phần tử con theo hướng vuông góc hướng chính*/
+    align-content: stretch;         /*Căn chỉnh hàng (cột) theo hướng vuông góc (chỉ hiệu lực khi nhiều hàng hoặc cột)*/
+
+    padding: 5px;
+    background: #88728b;
+    min-width: 320px;
+    height: 480px;
+    margin: auto;
+}
+
+.flexitem {
+    padding: 20px;
+    background: lightblue;
+    margin: 1px;
+    font-weight: bold;
+}

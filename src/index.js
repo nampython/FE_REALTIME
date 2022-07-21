@@ -23,8 +23,8 @@ const io = new Server(server)
 // Kafka consumer
 const kafka = require('kafka-node');
 
-const Consumer = kafka.Consumer,
-    client1 = new kafka.KafkaClient(),
+const Consumer = kafka.Consumer;
+const  client1 = new kafka.KafkaClient(),
     consumer = new Consumer(
         client1,
         [
@@ -40,6 +40,17 @@ var Producer = kafka.Producer,
     KeyedMessage = kafka.KeyedMessage,
     client2 = new kafka.KafkaClient(),
     producer = new Producer(client2)
+
+const  client3 = new kafka.KafkaClient(),
+    consumer3 = new Consumer(
+        client3,
+        [
+            { topic: 'tweet3', partition: 0 }
+        ],
+        {
+            autoCommit: false
+        }
+    );
 
 
 // database
@@ -68,6 +79,13 @@ io.on('connection', (client) => {
 
 
 
+io.on('connection', (client) => {
+    consumer3.on('message', function (message) {
+        console.log(message);
+        client.emit('tweet3', message.value);
+    });
+})
+
 
 
 io.on('connection', (socket) => {
@@ -76,24 +94,10 @@ io.on('connection', (socket) => {
             { topic: 'tweet', messages: text, partition: 0 },
         ];
         producer.send(payloads, function (err, data) {
-            console.log(data);
+            // console.log(data);
         });
     })
 })
-
-
-//     socket.on('text', (msg) => {
-//         const payloads = [
-//             { topic: 'tweet', messages: 'hi', partition: 0 },
-//         ];
-//         producer.on('ready', function () {
-//             producer.send(payloads, function (err, data) {
-//                 console.log("HHAHA");
-//             });
-//         })
-//     });
-// })
-
 
 io.on('connection', (client) => {
     var sentimentPositives = 0;
