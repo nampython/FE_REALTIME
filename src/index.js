@@ -24,33 +24,17 @@ const io = new Server(server)
 const kafka = require('kafka-node');
 
 const Consumer = kafka.Consumer;
-const  client1 = new kafka.KafkaClient(),
-    consumer = new Consumer(
-        client1,
-        [
-            { topic: 'tweets', partition: 0 }
-        ],
-        {
-            autoCommit: false
-        }
-    );
+const  client1 = new kafka.KafkaClient();
+const  client3 = new kafka.KafkaClient();
 
+let  consumer = new Consumer(client1,[{ topic: 'tweets', partition: 0 }],{autoCommit: false}, {groupId: 'group1'});
+let  consumer3 = new Consumer(client3,[{topic: 'tweet4', partition: 0 }],{autoCommit: false}, {groupId: 'group2'});
 
 var Producer = kafka.Producer,
     KeyedMessage = kafka.KeyedMessage,
     client2 = new kafka.KafkaClient(),
     producer = new Producer(client2)
 
-const  client3 = new kafka.KafkaClient(),
-    consumer3 = new Consumer(
-        client3,
-        [
-            { topic: 'tweet3', partition: 0 }
-        ],
-        {
-            autoCommit: false
-        }
-    );
 
 
 // database
@@ -69,7 +53,7 @@ app.set('views', path.join(__dirname, 'resources/views'));
 const route = require('./resources/routes')
 route(app);
 
-const tweet = require('C:/Users/nam.dinh/Desktop/study/big/src/resources/app/models/Sentiment.js')
+const tweet = require('/home/nam-pc/Desktop/source code/FE_REALTIME/src/resources/app/models/Sentiment.js')
 
 io.on('connection', (client) => {
     consumer.on('message', function (message) {
@@ -78,18 +62,17 @@ io.on('connection', (client) => {
 })
 
 
-
 io.on('connection', (client) => {
     consumer3.on('message', function (message) {
-        console.log(message);
+        console.log(message.value);
         client.emit('tweet3', message.value);
     });
 })
 
 
-
 io.on('connection', (socket) => {
     socket.on('text', function (text) {
+        console.log(text);
         const payloads = [
             { topic: 'tweet', messages: text, partition: 0 },
         ];

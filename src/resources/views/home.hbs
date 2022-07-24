@@ -1,24 +1,60 @@
-<div>
-  <div>
-    <ul id="messages"></ul>
-    <div id="chatContainer"></div>
-  </div>
-  <div id="worldmap"></div>
-  <div id="realtimeChart" style="height: 370px; width: 500px 100%;"></div>
-  {{!-- style="position: relative; width: 500px; height: 300px;" --}}
-  {{!-- <h1>{{tweets}}</h1> --}}
-  <div id="pieChat" style="height: 370px; width: 500px 100%;"></div>
-
-
-  <form class="form-inline-1">
-    <div class="form-group mb-2">
-      <label for="staticEmail2" class="sr-only"></label>
-      <input type="text" class="form-control-plaintext" id="text" value="Type some text">
+<div class="container">
+  <div class="box box-1 chatRealtime">
+    {{!-- display realtime chat --}}
+    <div>
+      <div class="chatContainer" id="chatContainer">
+        <div class="message">
+          wqeqweqw
+        </div>
+      </div>
     </div>
-    <button type="button" class="btn btn-primary mb-2" id="button">Classify Text</button>
-  </form>
+  </div>
 
-  <ul id="result">result</ul>
-  <div id="chatContainer1"></div>
+  <div class="box box-2 checkSentiment">
+    {{!-- check sentiment text --}}
+    <form>
+      <div class="mb-4 w-full bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+        <div class="py-2 px-4 bg-white rounded-t-lg dark:bg-gray-800">
+          <label for="comment" class="sr-only">Your comment</label>
+          <textarea id="comment" rows="4"
+            class="px-0 w-full text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+            placeholder="Type some text..." required></textarea>
+        </div>
+        <div class="flex justify-between items-center py-2 px-3 border-t dark:border-gray-600">
+          <button type="button"
+            class="btn inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+            Classify text
+          </button>
+        </div>
+      </div>
+    </form>
+    {{!-- display result --}}
+    <div class="overflow-x-auto relative result">
+      <table id= "mytable" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="py-3 px-6">
+              Text
+            </th>
+            <th scope="col" class="py-3 px-6">
+              Predict
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
+
+<div class="display-2">
+  <div class="box-3" id="worldmap"></div>
+  <div class= "box-4" id="realtimeChart"></div>
+</div>
+
+
+<div class="container-3">
+  <div id="pieChat"></div>
+</div>

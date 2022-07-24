@@ -4,9 +4,12 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.1/dist/flowbite.min.css" />
     <link rel="stylesheet" href="/css/app.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -15,15 +18,14 @@
 
         {{> header}}
 
-        <div class="container">
+        <div class="">
             {{{body}}}
         </div>
 
         {{> footer}}
 
     </div>
-
-
+    <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -42,23 +44,33 @@
     <script>
         const socket = io();
 
-        var button = document.getElementById("button");
-        var input = document.getElementById("text");
-        
+        var button = document.getElementsByClassName("btn");
+        var input = document.getElementById("comment");
+
+        function addRows(data) {
+            var table = document.getElementById('mytable').getElementsByTagName('tbody')[0],
+                row = table.insertRow(0),
+                cell1 = row.insertCell(0),
+                cell2 = row.insertCell(1);
+
+            row.className = 'bg-white dark:bg-gray-800';
+            cell1.className = 'py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white';
+            cell2.className = 'py-4 px-6';
+            cell1.innerText = `${data.value}`;
+            cell2.innerText = `${data.predict}`;
+        }
+
         $("button").click(function () {
             socket.emit("text", input.value)
-            //alert(input.value);
+
         });
+
 
         /*
             display result (-1, 1) (negative, positive)
         */
         socket.on('tweet3', (message) => {
-            const result = document.createElement("div");
-            result.classList.add("result");
-            result.innerText = `${message}`;
-            const resultContainer = document.getElementById('chatContainer1')
-            resultContainer.append(result)
+            addRows(JSON.parse(message));
         })
 
         socket.on('tweets_FromKafka', (message) => {
@@ -72,6 +84,7 @@
             const chatContainer = document.getElementById('chatContainer')
             // adds the new div to the message container div
             chatContainer.append(messageElement)
+            $('.chatContainer').scrollTop($('.chatContainer')[0].scrollHeight);
             //window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
@@ -93,7 +106,7 @@
                 },
                 responsive: true,
                 done: function (datamap) {
-                    datamap.svg.call(d3.behavior.zoom().on("zoom", redraw));
+                    //datamap.svg.call(d3.behavior.zoom().on("zoom", redraw));
                     //$("#resetZoom").on("click", function(){ resetZoom(); })
                     function redraw() {
                         datamap.svg.selectAll("g").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -194,14 +207,14 @@
             chart1.render();
         })
 /*0: {_id: 'Neutral', count: 189}
-                                                1: {_id: 'Negative', count: 43}
-                                                2: {_id: 'Positive', count: 44}*/
+                                                        1: {_id: 'Negative', count: 43}
+                                                        2: {_id: 'Positive', count: 44}*/
     </script>
     <script>
         var chart2 = new CanvasJS.Chart("realtimeChart", {
             animationEnabled: true,
             title: {
-                text: "QOS - Survey Result"
+                text: "Realtime Column"
             },
             axisY: {
                 title: "Response values",
